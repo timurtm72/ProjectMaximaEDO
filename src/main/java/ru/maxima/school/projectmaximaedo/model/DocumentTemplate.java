@@ -1,7 +1,6 @@
 package ru.maxima.school.projectmaximaedo.model;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 import java.util.List;
 @Entity
@@ -25,9 +24,11 @@ public class DocumentTemplate {
     @JoinColumn(name = "document_id")
     private Document document;
     /** Ссылка на поля документа*/
-    @OneToMany(cascade = CascadeType.ALL , fetch = FetchType.LAZY)//, mappedBy = "document_template")
+    @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)//, mappedBy = "document_template")
     //@JoinColumn(name="document_template_id")
     private List<DocumentField> templateFields;
+
+    private List<Integer> templateFieldNumbers;
 
     /** Флаг удаления */
     @Column(name = "is_removed", nullable = false)
@@ -37,12 +38,13 @@ public class DocumentTemplate {
     }
 
     public DocumentTemplate(String name, LocalDateTime createdAt, Integer version, Document document,
-                            List<DocumentField> templateFields, boolean isRemoved) {
+                            List<DocumentField> templateFields, List<Integer> templateFieldNumbers, boolean isRemoved) {
         this.name = name;
         this.createdAt = createdAt;
         this.version = version;
         this.document = document;
         this.templateFields = templateFields;
+        this.templateFieldNumbers = templateFieldNumbers;
         this.isRemoved = isRemoved;
     }
 
@@ -102,28 +104,11 @@ public class DocumentTemplate {
         isRemoved = removed;
     }
 
-    /**
-     * добавление поля в документ
-     */
-//    public void addField(DocumentTemplateField field) {
-//        if(field != null) {
-//            templateFields.add(field);
-//            field.setTemplate(this);
-//        }else{
-//            throw(new  NullPointerException());
-//        }
-//    }
+    public List<Integer> getTemplateFieldNumbers() {
+        return templateFieldNumbers;
+    }
 
-    /**
-     * удаление поля из документа
-     */
-//    public void removeField(DocumentTemplateField field){
-//        if(field != null) {
-//            templateFields.remove(field);
-//            field.setTemplate(this);
-//        }else{
-//            throw(new  NullPointerException());
-//        }
-//    }
-
+    public void setTemplateFieldNumbers(List<Integer> templateFieldNumbers) {
+        this.templateFieldNumbers = templateFieldNumbers;
+    }
 }
