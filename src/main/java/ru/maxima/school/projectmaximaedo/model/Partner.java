@@ -33,7 +33,7 @@ public class Partner {
     @Column(name = "country", nullable = false)
     private String country;
     /** Ссылка на сущность Комментарий */
-    @OneToMany(cascade = CascadeType.ALL , fetch = FetchType.LAZY, mappedBy = "partner")
+    @OneToMany(cascade = CascadeType.MERGE , fetch = FetchType.LAZY, mappedBy = "partner")
     private List<Comment> comments;
 
     /** Ссылка на сущность Document */

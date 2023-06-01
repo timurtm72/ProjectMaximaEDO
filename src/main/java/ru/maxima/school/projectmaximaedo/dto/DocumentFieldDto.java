@@ -1,53 +1,44 @@
-package ru.maxima.school.projectmaximaedo.model;
+package ru.maxima.school.projectmaximaedo.dto;
 
-import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import ru.maxima.school.projectmaximaedo.enums.FieldType;
 
-import java.util.List;
-
-@Entity
-@Table(name = "document_field")
-public class DocumentField {
+public class DocumentFieldDto {
     /**
      * ID
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     /**
      * Наименование поля
      */
-    @Column(name = "name", nullable = false)
+    @NotBlank(message = "Название поля не может быть пустым")
     private String name;
     /**
      * Тип поля
      */
-    @Column(name = "field_type", nullable = false)
-    @Enumerated(EnumType.STRING)
+    @NotNull(message = "Тип поля должны быть не null")
     private FieldType fieldType;
     /**
      * Плейсхолдер
      */
-    @Column(name = "placeholder", nullable = false)
+    @NotBlank(message = "Заполнитель поля  шаблона не может быть пустым")
     private String placeholder;
     /**
      * Значение по умолчанию
      */
-    @Column(name = "default_value")
+    @NotBlank(message = "Значение по умолчанию не может быть пустым")
     private String defaultValue;
 
-    /** Флаг удаления */
-    @Column(name = "is_removed", nullable = false)
-    private boolean isRemoved;
-    public DocumentField() {
+    public DocumentFieldDto() {
     }
 
-    public DocumentField(String name, FieldType fieldType, String placeholder, String defaultValue, boolean isRemoved) {
+    public DocumentFieldDto(Long id, String name, FieldType fieldType, String placeholder, String defaultValue) {
+        this.id = id;
         this.name = name;
         this.fieldType = fieldType;
         this.placeholder = placeholder;
         this.defaultValue = defaultValue;
-        this.isRemoved = isRemoved;
     }
 
     public Long getId() {
@@ -67,12 +58,10 @@ public class DocumentField {
     }
 
     public FieldType getFieldType() {
-
         return fieldType;
     }
 
     public void setFieldType(FieldType fieldType) {
-
         this.fieldType = fieldType;
     }
 
@@ -90,13 +79,5 @@ public class DocumentField {
 
     public void setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
-    }
-
-    public boolean isRemoved() {
-        return isRemoved;
-    }
-
-    public void setRemoved(boolean removed) {
-        isRemoved = removed;
     }
 }

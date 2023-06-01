@@ -1,6 +1,8 @@
 package ru.maxima.school.projectmaximaedo.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import ru.maxima.school.projectmaximaedo.enums.Role;
 
 import java.time.LocalDateTime;
@@ -27,11 +29,13 @@ public class User {
     /**
      * Время создание
      */
+    //@CreationTimestamp
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
     /**
      * Время обновления
      */
+    //@UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
     /**

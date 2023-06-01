@@ -4,17 +4,27 @@ public enum FieldType {
     /**
      * однострочный текст
      */
-    TEXT_SINGLE_LINE,
+    TEXT_SINGLE_LINE("Текст однострочный"),
     /**
      * число
      */
-    NUMBER,
+    NUMBER("Число"),
     /**
      * многострочный текст
      */
-    TEXT_MULTILINE,
+    TEXT_MULTILINE("Текст многострочный"),
     /**
      *выпадающий список
      */
-    DROP_DOWN_LIST
+    DROP_DOWN_LIST("Выпадающий список");
+
+    private final String name;
+
+    FieldType(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 }
