@@ -1,4 +1,4 @@
-package ru.maxima.school.projectmaximaedo.impl;
+package ru.maxima.school.projectmaximaedo.serviceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,7 +61,7 @@ public class DocumentTemplateServiceImpl implements DocumentTemplateService {
         if(documentTemplateDto.getTemplateFields() == null){
             documentTemplateDto.setTemplateFields(new ArrayList<>());
         }
-        //documentTemplateDto.getTemplateFields().clear();
+        documentTemplateDto.getTemplateFields().clear();
         List<DocumentFieldDto> documentFieldsDto = documentFieldService.getAll();
         for (int i = 0; i < documentTemplateDto.getTemplateFieldNumbers().size(); i++) {
             if(documentTemplateDto.getTemplateFieldNumbers().get(i) <= 0){
@@ -86,6 +86,7 @@ public class DocumentTemplateServiceImpl implements DocumentTemplateService {
         if(documentTemplateDto == null){
             return true;
         }
+        documentTemplateDto.setId(id);
         if(documentTemplateDto.getTemplateFields() == null){
             documentTemplateDto.setTemplateFields(new ArrayList<>());
         }

@@ -22,24 +22,19 @@ public class DocumentTemplateDto {
     /** Версия */
     @Positive(message = "Номер версии должен быть положительным значением")
     private Integer version;
-    /** Ссылка на документ*/
-    //@NotNull(message = "Документ не может быть null")
-    private Document document;
-
     /** Ссылка на поля документа*/
     private List<DocumentFieldDto> templateFields;
 
-    @NotNull(message = "Поля шаблона не могуть быть null")
+    @NotNull(message = "Поля шаблона не может быть null")
     private List<Integer> templateFieldNumbers;
     public DocumentTemplateDto() {
     }
 
-    public DocumentTemplateDto(Long id, String name, Integer version, Document document,
+    public DocumentTemplateDto(Long id, String name, Integer version,
                                List<DocumentFieldDto> templateFields, List<Integer> templateFieldNumbers) {
         this.id = id;
         this.name = name;
         this.version = version;
-        this.document = document;
         this.templateFields = templateFields;
         this.templateFieldNumbers = templateFieldNumbers;
     }
@@ -66,14 +61,6 @@ public class DocumentTemplateDto {
 
     public void setVersion(Integer version) {
         this.version = version;
-    }
-
-    public Document getDocument() {
-        return document;
-    }
-
-    public void setDocument(Document document) {
-        this.document = document;
     }
 
     public List<DocumentFieldDto> getTemplateFields() {

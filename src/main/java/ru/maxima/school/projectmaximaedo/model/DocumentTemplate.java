@@ -27,7 +27,7 @@ public class DocumentTemplate {
     @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)//, mappedBy = "document_template")
     //@JoinColumn(name="document_template_id")
     private List<DocumentField> templateFields;
-
+    @Transient
     private List<Integer> templateFieldNumbers;
 
     /** Флаг удаления */

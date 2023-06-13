@@ -19,11 +19,11 @@ public interface DocumentFieldService {
     /**
      *  Создает сущность DocumentFieldDto => DocumentField
      */
-    Boolean create(DocumentFieldDto dto);
+    Boolean create(DocumentFieldDto documentFieldDto);
     /**
      *  Обновляет сущность DocumentFieldDto => DocumentField
      */
-    Boolean update(DocumentFieldDto dto,Long id);
+    Boolean update(DocumentFieldDto documentFieldDto,Long id);
     /**
      *  Безопасное удаляет объект с заданным id
      */

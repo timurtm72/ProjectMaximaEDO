@@ -10,29 +10,24 @@ import ru.maxima.school.projectmaximaedo.utils.MapperUtil;
 
 @Component
 public class DocumentTemplateMapper implements IMapper<DocumentTemplate,DocumentTemplateDto> {
-    private IMapper mapper;
-
-
-    private final MapperUtil mapperUtils;
+    private final MapperUtil mapperUtil;
     @Autowired
-    public DocumentTemplateMapper(IMapper mapper, MapperUtil mapperUtils) {
-        this.mapper = mapper;
-        this.mapperUtils = mapperUtils;
+    public DocumentTemplateMapper(MapperUtil mapperUtil) {
+        this.mapperUtil = mapperUtil;
     }
-
     @Override
-    public DocumentTemplateDto toDto(DocumentTemplate entity) {
-        DocumentTemplateDto documentTemplateDto = mapperUtils.getMapper().map(entity, DocumentTemplateDto.class);
+    public DocumentTemplateDto toDto(DocumentTemplate documentTemplate) {
+        DocumentTemplateDto documentTemplateDto = mapperUtil.getMapper().map(documentTemplate, DocumentTemplateDto.class);
         documentTemplateDto.setTemplateFields(
-                mapperUtils.mapList(entity.getTemplateFields(), DocumentFieldDto.class)
+                mapperUtil.mapList(documentTemplate.getTemplateFields(), DocumentFieldDto.class)
         );
         return documentTemplateDto;
     }
     @Override
-    public DocumentTemplate toEntity(DocumentTemplateDto dto) {
-        DocumentTemplate documentTemplate = mapperUtils.getMapper().map(dto, DocumentTemplate.class);
+    public DocumentTemplate toEntity(DocumentTemplateDto documentTemplateDto) {
+        DocumentTemplate documentTemplate = mapperUtil.getMapper().map(documentTemplateDto, DocumentTemplate.class);
         documentTemplate.setTemplateFields(
-                mapperUtils.mapList(dto.getTemplateFields(), DocumentField.class));
+                mapperUtil.mapList(documentTemplateDto.getTemplateFields(), DocumentField.class));
         return documentTemplate;
     }
 }

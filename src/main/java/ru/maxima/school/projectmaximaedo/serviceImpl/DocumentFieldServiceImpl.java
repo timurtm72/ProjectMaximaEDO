@@ -1,4 +1,4 @@
-package ru.maxima.school.projectmaximaedo.impl;
+package ru.maxima.school.projectmaximaedo.serviceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,6 +58,10 @@ public class DocumentFieldServiceImpl implements DocumentFieldService {
     @Override
     @Transactional
     public Boolean update(DocumentFieldDto documentFieldDto,Long id) {
+        if(documentFieldDto == null){
+            return true;
+        }
+        documentFieldDto.setId(id);
         DocumentField documentField =  documentFieldMapper.toEntity(documentFieldDto);
         DocumentField readDocumentField = documentFieldRepository.findDocumentFieldById(id).orElse(null);
         if(readDocumentField != null){

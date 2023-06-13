@@ -1,6 +1,7 @@
 package ru.maxima.school.projectmaximaedo.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,20 +30,40 @@ public class Document {
     @Column(name = "registry_number", nullable = false)
     private String registryNumber;
     /**
+     * ID шаблона документа
+     */
+    @Transient
+    private Long documentTemplateId;
+    /**
      *ссылка на шаблон документа
      */
     @OneToOne(mappedBy = "document", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private DocumentTemplate template;
+    /**
+     * ID контрагента
+     */
+    @Transient
+    private Long partnerId;
     /**
      * ссылка на контрагента
      */
     @OneToOne(mappedBy = "document", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Partner partner;
     /**
+     * Список номеров файлов
+     */
+    @Transient
+    private List<Integer> filesNumbers;
+    /**
      * ссылка на файлы
      */
     @OneToMany(cascade = CascadeType.ALL , fetch = FetchType.LAZY, mappedBy = "document")
-    private List<File> files;
+    private List<AttachedFile> files;
+    /**
+     * ID пользователя
+     */
+    @Transient
+    private Long userId;
     /**
      * ссылка на пользователя
      */
@@ -63,14 +84,15 @@ public class Document {
     public Document() {
     }
 
-    public Document(String name, LocalDateTime createdAt, String registryNumber, DocumentTemplate template,
-                    Partner partner, List<File> files, User user, List<DocumentField> completedFields, Boolean isRemoved) {
+    public Document(String name, LocalDateTime createdAt, String registryNumber,
+                    DocumentTemplate template, Partner partner, List<AttachedFile> files, List<Integer> filesNumbers, User user, List<DocumentField> completedFields, Boolean isRemoved) {
         this.name = name;
         this.createdAt = createdAt;
         this.registryNumber = registryNumber;
         this.template = template;
         this.partner = partner;
         this.files = files;
+        this.filesNumbers = filesNumbers;
         this.user = user;
         this.completedFields = completedFields;
         this.isRemoved = isRemoved;
@@ -98,6 +120,14 @@ public class Document {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Integer> getFilesNumbers() {
+        return filesNumbers;
+    }
+
+    public void setFilesNumbers(List<Integer> filesNumbers) {
+        this.filesNumbers = filesNumbers;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -132,11 +162,11 @@ public class Document {
         this.partner = partner;
     }
 
-    public List<File> getFiles() {
+    public List<AttachedFile> getFiles() {
         return files;
     }
 
-    public void setFiles(List<File> files) {
+    public void setFiles(List<AttachedFile> files) {
         this.files = files;
     }
 
@@ -159,7 +189,7 @@ public class Document {
     /**
      * добавление файла в список
      */
-    public void addFile(File file) {
+    public void addFile(AttachedFile file) {
         if(file != null) {
             files.add(file);
             file.setDocument(this);
@@ -171,7 +201,7 @@ public class Document {
     /**
      * удаление файла из списка
      */
-    public void removeFile(File file){
+    public void removeFile(AttachedFile file){
         if(file != null) {
             files.remove(file);
             file.setDocument(null);

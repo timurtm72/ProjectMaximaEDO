@@ -6,8 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.maxima.school.projectmaximaedo.dto.DocumentTemplateDto;
 import org.springframework.web.server.ResponseStatusException;
-import ru.maxima.school.projectmaximaedo.impl.DocumentTemplateServiceImpl;
-import ru.maxima.school.projectmaximaedo.model.TemplateFiledNumbers;
+import ru.maxima.school.projectmaximaedo.serviceImpl.DocumentTemplateServiceImpl;
 import ru.maxima.school.projectmaximaedo.utils.Response;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -57,8 +56,8 @@ public class DocumentTemplateController {
      * @return статус обновления шаблона документа
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Response> updateDocumentTemplate(@Valid @PathVariable("id") Long id,
-                                                   @RequestBody DocumentTemplateDto documentTemplateDto) {
+    public ResponseEntity<Response> updateDocumentTemplate(@PathVariable("id") Long id,
+                                                           @Valid @RequestBody DocumentTemplateDto documentTemplateDto) {
         if (documentTemplateService.update(documentTemplateDto,id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     "Документ с идентификатором " + id + " не найден");

@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import ru.maxima.school.projectmaximaedo.dto.DocumentFieldDto;
-import ru.maxima.school.projectmaximaedo.impl.DocumentFieldServiceImpl;
+import ru.maxima.school.projectmaximaedo.serviceImpl.DocumentFieldServiceImpl;
 import ru.maxima.school.projectmaximaedo.utils.Response;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -57,8 +57,8 @@ public class DocumentFieldController {
      * @return статус обновления поля документа
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Response> updateDocumentField(@Valid @PathVariable("id") Long id,
-                                                           @RequestBody DocumentFieldDto documentFieldDto) {
+    public ResponseEntity<Response> updateDocumentField(@PathVariable("id") Long id,
+                                                        @Valid @RequestBody DocumentFieldDto documentFieldDto) {
         if (documentFieldService.update(documentFieldDto,id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     "Поле с идентификатором " + id + " не найдено");

@@ -3,7 +3,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "file")
-public class File {
+public class AttachedFile {
     /** ID */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,11 +31,11 @@ public class File {
     @Column(name = "is_removed", nullable = false)
     private boolean isRemoved;
 
-    public File() {
+    public AttachedFile() {
     }
 
-    public File(String name, String nameOfStorage, Long size, String mimeType, String description,
-                Document document, boolean isRemoved) {
+    public AttachedFile(String name, String nameOfStorage, Long size, String mimeType, String description,
+                        Document document, boolean isRemoved) {
         this.name = name;
         this.nameOfStorage = nameOfStorage;
         this.size = size;
@@ -109,4 +109,15 @@ public class File {
         isRemoved = removed;
     }
 
+    @Override
+    public String toString() {
+        return "id=" + id +
+                ", name='" + name +
+                ", nameOfStorage='" + nameOfStorage +
+                ", size=" + size +
+                ", mimeType='" + mimeType +
+                ", description='" + description +
+                ", document=" + document +
+                ", isRemoved=" + isRemoved;
+    }
 }

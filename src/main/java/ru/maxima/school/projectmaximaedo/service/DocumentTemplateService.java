@@ -21,11 +21,11 @@ public interface DocumentTemplateService {
     /**
      *  Создает сущность DocumentTemplateDto => DocumentTemplate
      */
-    Boolean create(DocumentTemplateDto dto);
+    Boolean create(DocumentTemplateDto documentTemplateDto);
     /**
      *  Обновляет сущность DocumentTemplateDto => DocumentTemplate
      */
-    Boolean update(DocumentTemplateDto dto,Long id);
+    Boolean update(DocumentTemplateDto documentTemplateDto,Long id);
     /**
      *  Безопасное удаляет объект с заданным id
      */
