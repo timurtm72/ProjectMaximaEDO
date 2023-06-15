@@ -1,4 +1,4 @@
-package ru.maxima.school.projectmaximaedo.service;
+package ru.maxima.school.projectmaximaedo.serviceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +10,7 @@ import ru.maxima.school.projectmaximaedo.mapper.UserReadMapper;
 import ru.maxima.school.projectmaximaedo.model.User;
 import ru.maxima.school.projectmaximaedo.repositories.UserRepository;
 
+import ru.maxima.school.projectmaximaedo.service.UserService;
 import ru.maxima.school.projectmaximaedo.utils.MapperUtil;
 
 import java.time.LocalDateTime;

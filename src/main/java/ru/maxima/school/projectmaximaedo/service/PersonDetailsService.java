@@ -3,6 +3,7 @@ package ru.maxima.school.projectmaximaedo.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import ru.maxima.school.projectmaximaedo.serviceImpl.UserServiceImpl;
 
 @Service
 public class PersonDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
