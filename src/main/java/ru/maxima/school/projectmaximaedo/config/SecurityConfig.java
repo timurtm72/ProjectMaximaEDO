@@ -2,20 +2,24 @@ package ru.maxima.school.projectmaximaedo.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import ru.maxima.school.projectmaximaedo.jwt_util.SimpleAccessDeniedHandler;
-import ru.maxima.school.projectmaximaedo.jwt_util.SimpleAuthenticationEntryPoint;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import ru.maxima.school.projectmaximaedo.security.SimpleAccessDeniedHandler;
+import ru.maxima.school.projectmaximaedo.security.SimpleAuthenticationEntryPoint;
 import ru.maxima.school.projectmaximaedo.security.JWTFilter;
 import ru.maxima.school.projectmaximaedo.service.PersonDetailsService;
-
+@Configuration
 public class SecurityConfig {
-    private PersonDetailsService personDetailsService;
-    private JWTFilter filter;
+    private final PersonDetailsService personDetailsService;
+    private final JWTFilter filter;
 
     @Autowired
     public SecurityConfig(PersonDetailsService personDetailsService, JWTFilter filter) {
@@ -30,7 +34,7 @@ public class SecurityConfig {
                 .cors()
                 .and()
                 .authorizeHttpRequests((authorize) ->
-                        authorize.requestMatchers("/api/register", "/api/login").permitAll()
+                        authorize.requestMatchers("/register", "/login").permitAll()
                                 .anyRequest().authenticated())
                 .userDetailsService(personDetailsService)
                 .exceptionHandling()
@@ -44,9 +48,21 @@ public class SecurityConfig {
 
         return http.build();
     }
+    @Bean
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
 
     @Bean
     protected PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:8081")
+                .allowedMethods("*");
+    }
+
 }

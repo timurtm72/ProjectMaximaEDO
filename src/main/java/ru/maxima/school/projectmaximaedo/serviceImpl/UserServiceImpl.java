@@ -43,19 +43,18 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public Boolean exists(Long id) {
-        return userRepository.existsById(id);
+        return userRepository.existsUserByIdIsRemovedIsFalse(id);
     }
-
     @Override
     @Transactional
     public Boolean existsByLogin(String login) {
-        return userRepository.existsUserByLogin(login);
+        return userRepository.existsUserByLoginIsRemovedIsFalse(login);
     }
 
     @Override
     @Transactional
     public UserReadDto getById(Long id) {
-        User user = userRepository.findUserById(id).orElse(null);
+        User user = userRepository.findUserByIdIsRemovedIsFalse(id).orElse(null);
         return user != null ? userReadMapper.toDto(user) : null;
     }
 
@@ -83,7 +82,7 @@ public class UserServiceImpl implements UserService {
         }
         userDto.setId(id);
         User user = userMapper.toEntity(userDto);
-        User readUser = userRepository.findUserById(id).orElse(null);
+        User readUser = userRepository.findUserByIdIsRemovedIsFalse(id).orElse(null);
         if (readUser != null) {
             user.setCreatedAt(readUser.getCreatedAt());
             user.setRemoved(readUser.getRemoved());
@@ -98,7 +97,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public Boolean safeDelete(Long id) {
-        User user = userRepository.findUserById(id).orElse(null);
+        User user = userRepository.findUserByIdIsRemovedIsFalse(id).orElse(null);
         if(user != null){
             user.setRemoved(true);
             userRepository.save(user);

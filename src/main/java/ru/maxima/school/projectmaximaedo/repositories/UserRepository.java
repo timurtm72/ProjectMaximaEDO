@@ -8,8 +8,10 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findAllByIsRemovedIsFalseOrderByIdAsc();
-    Optional<User> findUserById(Long id);
-    Boolean existsUserByLogin(String login);
+    Optional<User> findUserByIdIsRemovedIsFalse(Long id);
+    Boolean existsUserByLoginIsRemovedIsFalse(String login);
+    Boolean existsUserByIdIsRemovedIsFalse(Long id);
 
-    Optional<User> findByName(String name);
+
+    Optional<User> findByNameIsRemovedIsFalse(String name);
 }

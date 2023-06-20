@@ -1,4 +1,4 @@
-package ru.maxima.school.projectmaximaedo.jwt_util;
+package ru.maxima.school.projectmaximaedo.security;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

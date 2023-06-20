@@ -1,5 +1,6 @@
 package ru.maxima.school.projectmaximaedo.dto;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import ru.maxima.school.projectmaximaedo.enums.Role;
 
@@ -40,6 +41,7 @@ public class UserDto {
     /**
      * Почта
      */
+    @Email
     private String email;
 
     public UserDto() {
