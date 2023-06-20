@@ -140,7 +140,7 @@ public class DocumentServiceImpl implements DocumentService {
         document.setCreatedAt(LocalDateTime.now());
         document.setRemoved(false);
         List<Document> documents =
-                documentRepository.findAllByDocumentTypeContainingOrderByRegistryNumberAsc(document.getDocumentType());
+                documentRepository.findAllByDocumentTypeContainingOrderByRegistryNumberAsc(documentDto.getDocumentType());
         if (documents.size() == 0) {
             document.setRegistryNumber(1L);
         }else{
