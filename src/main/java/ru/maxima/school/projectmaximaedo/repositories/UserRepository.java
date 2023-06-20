@@ -11,7 +11,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findUserByIdIsRemovedIsFalse(Long id);
     Boolean existsUserByLoginIsRemovedIsFalse(String login);
     Boolean existsUserByIdIsRemovedIsFalse(Long id);
-
-
     Optional<User> findByNameIsRemovedIsFalse(String name);
 }
