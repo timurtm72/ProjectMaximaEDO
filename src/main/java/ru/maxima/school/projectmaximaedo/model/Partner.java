@@ -13,7 +13,7 @@ public class Partner {
     private Long id;
     /** Фамилия */
     @Column(name = "last_name", nullable = false)
-    private String LastName;
+    private String lastName;
     /** имя */
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -54,7 +54,7 @@ public class Partner {
                    String country, List<Comment> comments, Credential credential, boolean isRemoved) {
         this.patronymic = patronymic;
         this.firstName = firstName;
-        this.LastName = lastName;
+        this.lastName = lastName;
         this.phone = phone;
         this.telegram = telegram;
         this.email = email;
@@ -89,11 +89,11 @@ public class Partner {
     }
 
     public String getLastName() {
-        return LastName;
+        return lastName;
     }
 
     public void setLastName(String lastName) {
-        LastName = lastName;
+        lastName = lastName;
     }
 
     public String getPhone() {
@@ -154,29 +154,6 @@ public class Partner {
 
     public void setIsRemoved(boolean isRemoved) {
         this.isRemoved = isRemoved;
-    }
-    /**
-     * добавление комментарии в список
-     */
-    public void addComment(Comment comment) {
-        if(comment != null) {
-            comments.add(comment);
-            comment.setPartner(this);
-        }else{
-            throw(new  NullPointerException());
-        }
-    }
-
-    /**
-     * удаление комментарий из списка
-     */
-    public void removeComment(Comment comment) {
-        if (comment != null) {
-            comments.remove(comment);
-            comment.setPartner(null);
-        }else{
-            throw(new  NullPointerException());
-        }
     }
 
 }

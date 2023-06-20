@@ -1,4 +1,4 @@
-package ru.maxima.school.projectmaximaedo.impl;
+package ru.maxima.school.projectmaximaedo.serviceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
