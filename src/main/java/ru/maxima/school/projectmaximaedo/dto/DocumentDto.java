@@ -19,63 +19,63 @@ public class DocumentDto {
     /**
      * ID шаблона документа
      */
-    @NotBlank(message = "ID шаблона документа не может быть пустым")
-    private Long documentTemplateId;
+    @NotNull(message = "ID шаблона документа не может быть пустым")
+    private Long docTemplateId;
     /**
      * ссылка на шаблон документа
      */
-    private DocumentTemplateDto documentTemplateDto;
+    private DocumentTemplateDto template;
     /**
      * ID контрагента
      */
-    @NotBlank(message = "ID контрагента не может быть пустым")
-    private Long partnerId;
+    @NotNull(message = "ID контрагента не может быть пустым")
+    private Long partId;
     /**
      * ссылка на контрагента
      */
-    private PartnerDto partnerDto;
+    private PartnerDto partner;
     /**
      * Список номеров файлов
      */
-    @NotBlank(message = "Список номеров файлов не может быть пустым")
+    @NotNull(message = "Список номеров файлов не может быть пустым")
     private List<Integer> filesNumbers;
     /**
      * ссылка на файлы
      */
-    private List<AttachedFileDto> filesDto;
+    private List<AttachedFileDto> files;
     /**
      * ID пользователя
      */
-    @NotBlank(message = "Номер пользователя не может быть пустым")
-    private Long userId;
+    @NotNull(message = "Номер пользователя не может быть пустым")
+    private Long usrId;
     /**
      * ссылка на пользователя
      */
-    private UserDto userDto;
+    private UserReadDto user;
     /**
      * ссылка на поля документа
      */
-    @NotBlank(message = "Список заполненных полей шабллона не может быть пустым")
-    private List<DocumentFieldDto> completedFieldsDto;
-    @NotBlank(message = "Тип документа не может быть пустым")
+    @NotNull(message = "Список заполненных полей шабллона не может быть пустым")
+    private List<DocumentFieldDto> completedFields;
+    @NotNull(message = "Тип документа не может быть пустым")
     private DocumentType documentType;
 
     public DocumentDto() {
     }
 
-    public DocumentDto(Long id, String name, Long documentTemplateId, DocumentTemplateDto documentTemplateDto,
-                       Long partnerId, PartnerDto partnerDto, List<Integer> filesNumbers, List<AttachedFileDto> filesDto, Long userId, UserDto userDto, List<DocumentFieldDto> completedFieldsDto, DocumentType documentType) {
+    public DocumentDto(Long id, String name, Long docTemplateId, DocumentTemplateDto template, Long partId,
+                       PartnerDto partner, List<Integer> filesNumbers, List<AttachedFileDto> files, Long usrId, UserReadDto user, List<DocumentFieldDto> completedFields, DocumentType documentType) {
         this.id = id;
         this.name = name;
-        this.documentTemplateId = documentTemplateId;
-        this.documentTemplateDto = documentTemplateDto;
-        this.partnerId = partnerId;
-        this.partnerDto = partnerDto;
+        this.docTemplateId = docTemplateId;
+        this.template = template;
+        this.partId = partId;
+        this.partner = partner;
         this.filesNumbers = filesNumbers;
-        this.filesDto = filesDto;
-        this.userId = userId;
-        this.userDto = userDto;
-        this.completedFieldsDto = completedFieldsDto;
+        this.files = files;
+        this.usrId = usrId;
+        this.user = user;
+        this.completedFields = completedFields;
         this.documentType = documentType;
     }
 
@@ -95,36 +95,36 @@ public class DocumentDto {
         this.name = name;
     }
 
-    public Long getDocumentTemplateId() {
-        return documentTemplateId;
+    public Long getDocTemplateId() {
+        return docTemplateId;
     }
 
-    public void setDocumentTemplateId(Long documentTemplateId) {
-        this.documentTemplateId = documentTemplateId;
+    public void setDocTemplateId(Long docTemplateId) {
+        this.docTemplateId = docTemplateId;
     }
 
-    public DocumentTemplateDto getDocumentTemplateDto() {
-        return documentTemplateDto;
+    public DocumentTemplateDto getTemplate() {
+        return template;
     }
 
-    public void setDocumentTemplateDto(DocumentTemplateDto documentTemplateDto) {
-        this.documentTemplateDto = documentTemplateDto;
+    public void setTemplate(DocumentTemplateDto template) {
+        this.template = template;
     }
 
-    public Long getPartnerId() {
-        return partnerId;
+    public Long getPartId() {
+        return partId;
     }
 
-    public void setPartnerId(Long partnerId) {
-        this.partnerId = partnerId;
+    public void setPartId(Long partId) {
+        this.partId = partId;
     }
 
-    public PartnerDto getPartnerDto() {
-        return partnerDto;
+    public PartnerDto getPartner() {
+        return partner;
     }
 
-    public void setPartnerDto(PartnerDto partnerDto) {
-        this.partnerDto = partnerDto;
+    public void setPartner(PartnerDto partner) {
+        this.partner = partner;
     }
 
     public List<Integer> getFilesNumbers() {
@@ -135,36 +135,36 @@ public class DocumentDto {
         this.filesNumbers = filesNumbers;
     }
 
-    public List<AttachedFileDto> getFilesDto() {
-        return filesDto;
+    public List<AttachedFileDto> getFiles() {
+        return files;
     }
 
-    public void setFilesDto(List<AttachedFileDto> filesDto) {
-        this.filesDto = filesDto;
+    public void setFiles(List<AttachedFileDto> files) {
+        this.files = files;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getUsrId() {
+        return usrId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUsrId(Long usrId) {
+        this.usrId = usrId;
     }
 
-    public UserDto getUserDto() {
-        return userDto;
+    public UserReadDto getUser() {
+        return user;
     }
 
-    public void setUserDto(UserDto userDto) {
-        this.userDto = userDto;
+    public void setUser(UserReadDto user) {
+        this.user = user;
     }
 
-    public List<DocumentFieldDto> getCompletedFieldsDto() {
-        return completedFieldsDto;
+    public List<DocumentFieldDto> getCompletedFields() {
+        return completedFields;
     }
 
-    public void setCompletedFieldsDto(List<DocumentFieldDto> completedFieldsDto) {
-        this.completedFieldsDto = completedFieldsDto;
+    public void setCompletedFields(List<DocumentFieldDto> completedFields) {
+        this.completedFields = completedFields;
     }
 
     public DocumentType getDocumentType() {

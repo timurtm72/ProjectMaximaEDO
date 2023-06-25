@@ -2,7 +2,9 @@ package ru.maxima.school.projectmaximaedo.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import ru.maxima.school.projectmaximaedo.model.Document;
 
 import java.util.List;
 
@@ -23,18 +25,19 @@ public class PartnerDto {
     private String email;
     @NotBlank(message = "Название страны не может быть пустым")
     private String country;
-    private List<CommentDto> commentsDto;
-    @NotBlank(message = "Список номеров комеентариев не может быть пустым")
-    private List<Integer> commentsId;
-    private CredentialDto credentialDto;
-    @NotBlank(message = "Номер учетных данных не может быть пустым")
-    private Long credentialId;
+    private List<CommentDto> comments;
+    //private Document document;
+    private CredentialDto credential;
+    @NotNull(message = "Список номеров комеентариев не может быть пустым")
+    private List<Integer> commId;
+    @NotNull(message = "Номер учетных данных не может быть пустым")
+    private Long credId;
 
     public PartnerDto() {
     }
 
-    public PartnerDto(Long id, String lastName, String firstName, String patronymic, String phone, String telegram,
-                      String email, String country, List<CommentDto> commentsDto, List<Integer> commentsId, CredentialDto credentialDto, Long credentialId) {
+    public PartnerDto(Long id, String lastName, String firstName, String patronymic, String phone,
+                      String telegram, String email, String country, List<CommentDto> comments, CredentialDto credential, List<Integer> commId, Long credId) {
         this.id = id;
         this.lastName = lastName;
         this.firstName = firstName;
@@ -43,10 +46,10 @@ public class PartnerDto {
         this.telegram = telegram;
         this.email = email;
         this.country = country;
-        this.commentsDto = commentsDto;
-        this.commentsId = commentsId;
-        this.credentialDto = credentialDto;
-        this.credentialId = credentialId;
+        this.comments = comments;
+        this.credential = credential;
+        this.commId = commId;
+        this.credId = credId;
     }
 
     public Long getId() {
@@ -113,35 +116,35 @@ public class PartnerDto {
         this.country = country;
     }
 
-    public List<CommentDto> getCommentsDto() {
-        return commentsDto;
+    public List<CommentDto> getComments() {
+        return comments;
     }
 
-    public void setCommentsDto(List<CommentDto> commentsDto) {
-        this.commentsDto = commentsDto;
+    public void setComments(List<CommentDto> comments) {
+        this.comments = comments;
     }
 
-    public List<Integer> getCommentsId() {
-        return commentsId;
+    public CredentialDto getCredential() {
+        return credential;
     }
 
-    public void setCommentsId(List<Integer> commentsId) {
-        this.commentsId = commentsId;
+    public void setCredential(CredentialDto credential) {
+        this.credential = credential;
     }
 
-    public CredentialDto getCredentialDto() {
-        return credentialDto;
+    public List<Integer> getCommId() {
+        return commId;
     }
 
-    public void setCredentialDto(CredentialDto credentialDto) {
-        this.credentialDto = credentialDto;
+    public void setCommId(List<Integer> commId) {
+        this.commId = commId;
     }
 
-    public Long getCredentialId() {
-        return credentialId;
+    public Long getCredId() {
+        return credId;
     }
 
-    public void setCredentialId(Long credentialId) {
-        this.credentialId = credentialId;
+    public void setCredId(Long credId) {
+        this.credId = credId;
     }
 }

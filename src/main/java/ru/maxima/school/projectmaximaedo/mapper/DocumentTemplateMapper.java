@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.maxima.school.projectmaximaedo.dto.DocumentFieldDto;
 import ru.maxima.school.projectmaximaedo.dto.DocumentTemplateDto;
-import ru.maxima.school.projectmaximaedo.model.DocumentField;
 import ru.maxima.school.projectmaximaedo.model.DocumentTemplate;
 import ru.maxima.school.projectmaximaedo.utils.MapperUtil;
 
@@ -18,7 +17,7 @@ public class DocumentTemplateMapper implements IMapper<DocumentTemplate,Document
     @Override
     public DocumentTemplateDto toDto(DocumentTemplate documentTemplate) {
         DocumentTemplateDto documentTemplateDto = mapperUtil.getMapper().map(documentTemplate, DocumentTemplateDto.class);
-        documentTemplateDto.setTemplateFieldsDto(
+        documentTemplateDto.setTemplateFields(
                 mapperUtil.mapList(documentTemplate.getTemplateFields(), DocumentFieldDto.class)
         );
         return documentTemplateDto;
@@ -26,8 +25,8 @@ public class DocumentTemplateMapper implements IMapper<DocumentTemplate,Document
     @Override
     public DocumentTemplate toEntity(DocumentTemplateDto documentTemplateDto) {
         DocumentTemplate documentTemplate = mapperUtil.getMapper().map(documentTemplateDto, DocumentTemplate.class);
-        documentTemplate.setTemplateFields(
-                mapperUtil.mapList(documentTemplateDto.getTemplateFieldsDto(), DocumentField.class));
+//        documentTemplate.setTemplateFields(
+//                mapperUtil.mapList(documentTemplateDto.getTemplateFieldsDto(), DocumentField.class));
         return documentTemplate;
     }
 }

@@ -34,12 +34,12 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Boolean exists(Long id) {
-        return commentRepository.existsByIdIsRemovedIsFalse(id);
+        return commentRepository.existsByIdAndIsRemovedIsFalse(id);
     }
 
     @Override
     public CommentDto getById(Long id) {
-        Comment comment = commentRepository.findCommentByIdIsRemovedIsFalse(id).orElse(null);
+        Comment comment = commentRepository.findCommentByIdAndIsRemovedIsFalse(id).orElse(null);
         return comment != null ? commentMapper.toDto(comment) : null;
     }
     @Override
@@ -61,9 +61,10 @@ public class CommentServiceImpl implements CommentService {
         }
         commentDto.setId(id);
         Comment comment =  commentMapper.toEntity(commentDto);
-        Comment readComment = commentRepository.findCommentByIdIsRemovedIsFalse(id).orElse(null);
+        Comment readComment = commentRepository.findCommentByIdAndIsRemovedIsFalse(id).orElse(null);
         if(readComment != null){
             comment.setRemoved(readComment.getRemoved());
+            comment.setCreatedAt(readComment.getCreatedAt());
             commentRepository.save(comment);
             return false;
         }
@@ -72,7 +73,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Boolean safeDelete(Long id) {
-        Comment comment = commentRepository.findCommentByIdIsRemovedIsFalse(id).orElse(null);
+        Comment comment = commentRepository.findCommentByIdAndIsRemovedIsFalse(id).orElse(null);
         if(comment != null){
             comment.setRemoved(true);
             commentRepository.save(comment);

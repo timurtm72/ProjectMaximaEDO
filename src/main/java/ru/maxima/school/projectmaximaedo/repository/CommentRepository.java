@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface CommentRepository  extends JpaRepository<Comment, Long> {
     List<Comment> findAllByIsRemovedIsFalseOrderByIdAsc();
-    Optional<Comment> findCommentByIdIsRemovedIsFalse(Long id);
-    Boolean existsByIdIsRemovedIsFalse(Long id);
+    Optional<Comment> findCommentByIdAndIsRemovedIsFalse(Long id);
+    Boolean existsByIdAndIsRemovedIsFalse(Long id);
 }

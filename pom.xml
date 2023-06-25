@@ -32,7 +32,7 @@
         <dependency>
             <artifactId>modelmapper</artifactId>
             <groupId>org.modelmapper</groupId>
-            <version>3.1.1</version>
+            <version>3.0.0</version>
         </dependency>
         <dependency>
             <artifactId>postgresql</artifactId>

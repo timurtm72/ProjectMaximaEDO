@@ -48,13 +48,13 @@ public class AttachedFileServiceImpl implements AttachedFileService {
     @Override
     @Transactional
     public Boolean exists(Long id) {
-        return fileRepository.existsByIdIsRemovedIsFalse(id);
+        return fileRepository.existsByIdAndIsRemovedIsFalse(id);
     }
 
     @Override
     @Transactional
     public AttachedFileDto getById(Long id) {
-        AttachedFile file = fileRepository.findFileByIdIsRemovedIsFalse(id).orElse(null);
+        AttachedFile file = fileRepository.findFileByIdAndIsRemovedIsFalse(id).orElse(null);
         return file != null ? fileMapper.toDto(file) : null;
     }
 
@@ -110,7 +110,7 @@ public class AttachedFileServiceImpl implements AttachedFileService {
         }
         fileDto.setId(id);
         AttachedFile file = fileMapper.toEntity(fileDto);
-        AttachedFile readFile = fileRepository.findFileByIdIsRemovedIsFalse(id).orElse(null);
+        AttachedFile readFile = fileRepository.findFileByIdAndIsRemovedIsFalse(id).orElse(null);
         if (readFile != null) {
             file.setRemoved(readFile.isRemoved());
             file.setSize(readFile.getSize());
@@ -124,7 +124,7 @@ public class AttachedFileServiceImpl implements AttachedFileService {
     @Override
     @Transactional
     public Boolean safeDelete(Long id) {
-        AttachedFile file = fileRepository.findFileByIdIsRemovedIsFalse(id).orElse(null);
+        AttachedFile file = fileRepository.findFileByIdAndIsRemovedIsFalse(id).orElse(null);
         if (file != null) {
             file.setRemoved(true);
             fileRepository.save(file);

@@ -77,9 +77,9 @@ public class User {
     /**
      * Ссылка на сущность Document
      */
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "document_id")
-    private Document document;
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "document_id")
+//    private Document document;
     /**
      * Флаг удаления
      */
@@ -102,7 +102,7 @@ public class User {
         this.telegram = telegram;
         this.email = email;
         this.lastVisit = lastVisit;
-        this.document = document;
+        //this.document = document;
         this.isRemoved = isRemoved;
     }
 
@@ -202,13 +202,13 @@ public class User {
         this.lastVisit = lastVisit;
     }
 
-    public Document getDocument() {
-        return document;
-    }
-
-    public void setDocument(Document document) {
-        this.document = document;
-    }
+//    public Document getDocument() {
+//        return document;
+//    }
+//
+//    public void setDocument(Document document) {
+//        this.document = document;
+//    }
 
     public Boolean getRemoved() {
         return isRemoved;

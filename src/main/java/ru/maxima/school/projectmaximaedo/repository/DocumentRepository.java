@@ -9,8 +9,8 @@ import java.util.Optional;
 
 public interface DocumentRepository extends JpaRepository<Document,Long> {
     List<Document> findAllByIsRemovedIsFalseOrderByIdAsc();
-    Optional<Document> findDocumentByIdIsRemovedIsFalse(Long id);
+    Optional<Document> findDocumentByIdAndIsRemovedIsFalse(Long id);
 
-    Boolean existsByIdIsRemovedIsFalse(Long id);
-    List<Document> findAllByDocumentTypeContainingOrderByRegistryNumberAsc(DocumentType documentType);
+    Boolean existsByIdAndIsRemovedIsFalse(Long id);
+    List<Document> findAllByDocumentTypeOrderByRegistryNumberAsc(DocumentType documentType);
 }

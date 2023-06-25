@@ -7,8 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface DocumentTemplateRepository extends JpaRepository<DocumentTemplate, Long> {
-  List<DocumentTemplate>  findAllByIsRemovedIsFalseOrderByIdAsc();
-  Optional<DocumentTemplate> findDocumentTemplateByIdIsRemovedIsFalse(Long id);
-  Boolean existsByIdIsRemovedIsFalse(Long id);
-  List<DocumentTemplate> findDocumentTemplatesByVersionIsNotNullIsRemovedIsFalseOrderByVersion();
+  List<DocumentTemplate> findAllByIsRemovedIsFalseOrderByIdAsc();
+  Optional<DocumentTemplate> findDocumentTemplateByIdAndIsRemovedIsFalse(Long id);
+  Boolean existsByIdAndIsRemovedIsFalse(Long id);
 }

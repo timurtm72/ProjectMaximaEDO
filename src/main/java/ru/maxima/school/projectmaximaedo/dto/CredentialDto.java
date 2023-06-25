@@ -1,7 +1,9 @@
 package ru.maxima.school.projectmaximaedo.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import ru.maxima.school.projectmaximaedo.enums.CredentialType;
+import ru.maxima.school.projectmaximaedo.model.Partner;
 
 public class CredentialDto {
     /**
@@ -16,16 +18,18 @@ public class CredentialDto {
     /**
      *тип лица: физ лицо, юр лицо
      */
-    @NotBlank(message = "Тип комментария не может быть пустым")
+    @NotNull(message = "Тип комментария не может быть пустым")
     private CredentialType credentialType;
+//    private Partner partner;
 
     public CredentialDto() {
     }
 
-    public CredentialDto(Long id, String text, CredentialType credentialType) {
+    public CredentialDto(Long id,String text, CredentialType credentialType) {
         this.id = id;
         this.text = text;
         this.credentialType = credentialType;
+        //this.partner = partner;
     }
 
     public Long getId() {

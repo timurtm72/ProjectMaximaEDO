@@ -10,6 +10,7 @@ import java.util.List;
 @Component
 public class MapperUtil {
     private final ModelMapper mapper;
+
     @Autowired
     public MapperUtil(ModelMapper mapper) {
         this.mapper = mapper;

@@ -6,19 +6,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import ru.maxima.school.projectmaximaedo.dto.DocumentDto;
+import ru.maxima.school.projectmaximaedo.enums.DocumentType;
 import ru.maxima.school.projectmaximaedo.mapper.DocumentMapper;
 import ru.maxima.school.projectmaximaedo.model.*;
-import ru.maxima.school.projectmaximaedo.repository.DocumentRepository;
-import ru.maxima.school.projectmaximaedo.repository.DocumentTemplateRepository;
-import ru.maxima.school.projectmaximaedo.repository.FileRepository;
-import ru.maxima.school.projectmaximaedo.repository.PartnerRepository;
+import ru.maxima.school.projectmaximaedo.repository.*;
 import ru.maxima.school.projectmaximaedo.service.DocumentService;
 import ru.maxima.school.projectmaximaedo.utils.MapperUtil;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class DocumentServiceImpl implements DocumentService {
@@ -27,16 +24,18 @@ public class DocumentServiceImpl implements DocumentService {
     private final MapperUtil mapperUtil;
     private final DocumentTemplateRepository documentTemplateRepository;
     private final PartnerRepository partnerRepository;
+    private final UserRepository userRepository;
     private final FileRepository fileRepository;
 
     @Autowired
     public DocumentServiceImpl(DocumentRepository documentRepository,
-                               DocumentMapper documentMapper, MapperUtil mapperUtil, DocumentTemplateRepository documentTemplateRepository, PartnerRepository partnerRepository, FileRepository fileRepository) {
+                               DocumentMapper documentMapper, MapperUtil mapperUtil, DocumentTemplateRepository documentTemplateRepository, PartnerRepository partnerRepository, UserRepository userRepository, FileRepository fileRepository) {
         this.documentRepository = documentRepository;
         this.documentMapper = documentMapper;
         this.mapperUtil = mapperUtil;
         this.documentTemplateRepository = documentTemplateRepository;
         this.partnerRepository = partnerRepository;
+        this.userRepository = userRepository;
         this.fileRepository = fileRepository;
     }
 
@@ -53,13 +52,13 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     @Transactional
     public Boolean exists(Long id) {
-        return documentRepository.existsByIdIsRemovedIsFalse(id);
+        return documentRepository.existsByIdAndIsRemovedIsFalse(id);
     }
 
     @Override
     @Transactional
     public DocumentDto getById(Long id) {
-        Document document = documentRepository.findDocumentByIdIsRemovedIsFalse(id).orElse(null);
+        Document document = documentRepository.findDocumentByIdAndIsRemovedIsFalse(id).orElse(null);
         return document != null ? documentMapper.toDto(document) : null;
     }
 
@@ -70,8 +69,8 @@ public class DocumentServiceImpl implements DocumentService {
             return true;
         }
         Document document = documentMapper.toEntity(documentDto);
-        if (documentDto.getDocumentTemplateId() != null) {
-            DocumentTemplate documentTemplate = documentTemplateRepository.findDocumentTemplateByIdIsRemovedIsFalse(documentDto.getDocumentTemplateId()).orElse(null);
+        if (documentDto.getDocTemplateId() != null) {
+            DocumentTemplate documentTemplate = documentTemplateRepository.findDocumentTemplateByIdAndIsRemovedIsFalse(documentDto.getDocTemplateId()).orElse(null);
             if (documentTemplate != null) {
                 document.setTemplate(documentTemplate);
 
@@ -80,7 +79,7 @@ public class DocumentServiceImpl implements DocumentService {
                 }
                 if (documentTemplate.getTemplateFields() == null || documentTemplate.getTemplateFields().size() == 0) {
                     throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                            "Список полей пуст");
+                            "Список полей шаблона пуст");
                 }
                 List<DocumentField> documentFields = documentTemplate.getTemplateFields()
                         .stream()
@@ -101,19 +100,30 @@ public class DocumentServiceImpl implements DocumentService {
                     "Выберите ID шаблона для этого документа");
         }
 
-        if (documentDto.getPartnerId() != null) {
-            Partner partner = partnerRepository.findPartnerByIdIsRemovedIsFalse(documentDto.getPartnerId()).orElse(null);
+        if (documentDto.getPartId() != null) {
+            Partner partner = partnerRepository.findPartnerByIdAndIsRemovedIsFalse(documentDto.getPartId()).orElse(null);
             if (partner != null) {
                 document.setPartner(partner);
             } else {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Документ с " + documentDto.getDocumentTemplateId() + " не найден");
+                        "Документ с ID = " + documentDto.getDocTemplateId() + "  шаблона не найден");
             }
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     "Выберите ID контрагента для этого документа");
         }
-
+        if(documentDto.getUsrId() != null){
+            User user = userRepository.findUserByIdAndIsRemovedIsFalse(documentDto.getUsrId()).orElse(null);
+            if(user != null){
+                document.setUser(user);
+            }else{
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Документ с ID = " + documentDto.getUsrId() + " пользователя не найден");
+            }
+        }else{
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Выберите ID пользоваткля для этого документа");
+        }
         if (documentDto.getFilesNumbers() != null) {
             if (document.getFiles() == null) {
                 document.setFiles(new ArrayList<>());
@@ -139,9 +149,10 @@ public class DocumentServiceImpl implements DocumentService {
         }
         document.setCreatedAt(LocalDateTime.now());
         document.setRemoved(false);
+        DocumentType documentType = documentDto.getDocumentType();
         List<Document> documents =
-                documentRepository.findAllByDocumentTypeContainingOrderByRegistryNumberAsc(documentDto.getDocumentType());
-        if (documents.size() == 0) {
+                documentRepository.findAllByDocumentTypeOrderByRegistryNumberAsc(documentType);
+        if (documents == null || documents.size() == 0) {
             document.setRegistryNumber(1L);
         }else{
             Document documentRead = documents.get(documents.size() - 1);
@@ -158,14 +169,20 @@ public class DocumentServiceImpl implements DocumentService {
             return true;
         }
         documentDto.setId(id);
-        if(documentDto.getCompletedFieldsDto() == null) {
-            documentDto.setCompletedFieldsDto(new ArrayList<>());
+        if(documentDto.getCompletedFields() == null) {
+            documentDto.setCompletedFields(new ArrayList<>());
         }
         Document document = documentMapper.toEntity(documentDto);
-        Document readDocument = documentRepository.findDocumentByIdIsRemovedIsFalse(id).orElse(null);
+        Document readDocument = documentRepository.findDocumentByIdAndIsRemovedIsFalse(id).orElse(null);
         if (readDocument != null) {
+            document.setCreatedAt(readDocument.getCreatedAt());
             document.setRemoved(readDocument.getRemoved());
             document.setRegistryNumber(readDocument.getRegistryNumber());
+            document.setUser(readDocument.getUser());
+            document.setCompletedFields(readDocument.getCompletedFields());
+            document.setPartner(readDocument.getPartner());
+            document.setTemplate(readDocument.getTemplate());
+            document.setFiles(readDocument.getFiles());
             documentRepository.save(document);
             return false;
         }else{
@@ -177,7 +194,7 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     @Transactional
     public Boolean safeDelete(Long id) {
-        Document document = documentRepository.findDocumentByIdIsRemovedIsFalse(id).orElse(null);
+        Document document = documentRepository.findDocumentByIdAndIsRemovedIsFalse(id).orElse(null);
         if (document != null) {
             document.setRemoved(true);
             documentRepository.save(document);

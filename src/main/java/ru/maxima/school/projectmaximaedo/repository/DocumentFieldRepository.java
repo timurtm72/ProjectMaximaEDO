@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface DocumentFieldRepository extends JpaRepository<DocumentField,Long> {
     List<DocumentField> findAllByIsRemovedIsFalseOrderByIdAsc();
-    Optional<DocumentField> findDocumentFieldByIdIsRemovedIsFalse(Long id);
-    Boolean existsByIdIsRemovedIsFalse(Long id);
+    Optional<DocumentField> findDocumentFieldByIdAndIsRemovedIsFalse(Long id);
+    Boolean existsByIdAndIsRemovedIsFalse(Long id);
 }

@@ -20,6 +20,12 @@ public class Credential {
     @Column(name = "text")
     private String text;
     /**
+     *тип лица: физ лицо, юр лицо
+     */
+    @Column(name = "credential_type")
+    @Enumerated(EnumType.STRING)
+    private CredentialType credentialType;
+    /**
      * время создания
      */
     @Column(name = "created_at", nullable = false)
@@ -29,18 +35,13 @@ public class Credential {
      */
     @Column(name = "version")
     private Integer version;
-    /**
-     *тип лица: физ лицо, юр лицо
-     */
-    @Column(name = "credential_type")
-    @Enumerated(EnumType.STRING)
-    private CredentialType credentialType;
+
     /**
      * ссылка на контрагента
      */
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "partner_id")
-    private Partner partner;
+//    @OneToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "partner_id")
+//    private Partner partner;
     /**
      * флаг удаления
      */
@@ -50,13 +51,14 @@ public class Credential {
     public Credential() {
     }
 
-    public Credential(String text, LocalDateTime createdAt, Integer version,
-                      CredentialType credentialType, Partner partner, Boolean isRemoved) {
+    public Credential(Long id, String text, CredentialType credentialType, LocalDateTime createdAt, Integer version,
+                      Partner partner, Boolean isRemoved) {
+        this.id = id;
         this.text = text;
+        this.credentialType = credentialType;
         this.createdAt = createdAt;
         this.version = version;
-        this.credentialType = credentialType;
-        this.partner = partner;
+//        this.partner = partner;
         this.isRemoved = isRemoved;
     }
 
@@ -76,6 +78,14 @@ public class Credential {
         this.text = text;
     }
 
+    public CredentialType getCredentialType() {
+        return credentialType;
+    }
+
+    public void setCredentialType(CredentialType credentialType) {
+        this.credentialType = credentialType;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -92,21 +102,13 @@ public class Credential {
         this.version = version;
     }
 
-    public CredentialType getCredentialType() {
-        return credentialType;
-    }
-
-    public void setCredentialType(CredentialType credentialType) {
-        this.credentialType = credentialType;
-    }
-
-    public Partner getPartner() {
-        return partner;
-    }
-
-    public void setPartner(Partner partner) {
-        this.partner = partner;
-    }
+//    public Partner getPartner() {
+//        return partner;
+//    }
+//
+//    public void setPartner(Partner partner) {
+//        this.partner = partner;
+//    }
 
     public Boolean getRemoved() {
         return isRemoved;

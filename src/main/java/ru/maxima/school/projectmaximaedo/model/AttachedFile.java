@@ -24,9 +24,9 @@ public class AttachedFile {
     @Column(name = "description", nullable = false)
     private String description;
     /** Ссылка на документ */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="document_id")
-    private Document document;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name="document_id")
+//    private Document document;
     /** флаг удаления */
     @Column(name = "is_removed", nullable = false)
     private boolean isRemoved;
@@ -34,14 +34,15 @@ public class AttachedFile {
     public AttachedFile() {
     }
 
-    public AttachedFile(String name, String nameOfStorage, Long size, String mimeType, String description,
+    public AttachedFile(Long id, String name, String nameOfStorage, Long size, String mimeType, String description,
                         Document document, boolean isRemoved) {
+        this.id = id;
         this.name = name;
         this.nameOfStorage = nameOfStorage;
         this.size = size;
         this.mimeType = mimeType;
         this.description = description;
-        this.document = document;
+        //this.document = document;
         this.isRemoved = isRemoved;
     }
 
@@ -93,13 +94,13 @@ public class AttachedFile {
         this.description = description;
     }
 
-    public Document getDocument() {
-        return document;
-    }
-
-    public void setDocument(Document document) {
-        this.document = document;
-    }
+//    public Document getDocument() {
+//        return document;
+//    }
+//
+//    public void setDocument(Document document) {
+//        this.document = document;
+//    }
 
     public boolean isRemoved() {
         return isRemoved;
@@ -117,7 +118,6 @@ public class AttachedFile {
                 ", size=" + size +
                 ", mimeType='" + mimeType +
                 ", description='" + description +
-                ", document=" + document +
                 ", isRemoved=" + isRemoved;
     }
 }

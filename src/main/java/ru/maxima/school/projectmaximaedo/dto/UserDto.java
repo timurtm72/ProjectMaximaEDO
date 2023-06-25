@@ -21,7 +21,7 @@ public class UserDto {
     /**
      * Роль
      */
-    @NotBlank(message = "Роль пользователя не может быть пустой")
+    @NotNull(message = "Роль пользователя не может быть пустой")
     private Role role;
     /**
      * Имя

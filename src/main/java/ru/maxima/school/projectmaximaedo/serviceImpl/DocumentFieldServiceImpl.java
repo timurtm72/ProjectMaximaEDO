@@ -34,12 +34,12 @@ public class DocumentFieldServiceImpl implements DocumentFieldService {
     @Override
     @Transactional
     public Boolean exists(Long id) {
-        return documentFieldRepository.existsByIdIsRemovedIsFalse(id);
+        return documentFieldRepository.existsByIdAndIsRemovedIsFalse(id);
     }
     @Override
     @Transactional
     public DocumentFieldDto getById(Long id) {
-        DocumentField documentField = documentFieldRepository.findDocumentFieldByIdIsRemovedIsFalse(id).orElse(null);
+        DocumentField documentField = documentFieldRepository.findDocumentFieldByIdAndIsRemovedIsFalse(id).orElse(null);
         return documentField != null ?documentFieldMapper.toDto(documentField) : null;
     }
 
@@ -62,7 +62,7 @@ public class DocumentFieldServiceImpl implements DocumentFieldService {
         }
         documentFieldDto.setId(id);
         DocumentField documentField =  documentFieldMapper.toEntity(documentFieldDto);
-        DocumentField readDocumentField = documentFieldRepository.findDocumentFieldByIdIsRemovedIsFalse(id).orElse(null);
+        DocumentField readDocumentField = documentFieldRepository.findDocumentFieldByIdAndIsRemovedIsFalse(id).orElse(null);
         if(readDocumentField != null){
             documentField.setRemoved(readDocumentField.isRemoved());
             documentFieldRepository.save(documentField);
@@ -74,7 +74,7 @@ public class DocumentFieldServiceImpl implements DocumentFieldService {
     @Override
     @Transactional
     public Boolean safeDelete(Long id) {
-        DocumentField documentField = documentFieldRepository.findDocumentFieldByIdIsRemovedIsFalse(id).orElse(null);
+        DocumentField documentField = documentFieldRepository.findDocumentFieldByIdAndIsRemovedIsFalse(id).orElse(null);
         if(documentField != null){
             documentField.setRemoved(true);
             documentFieldRepository.save(documentField);

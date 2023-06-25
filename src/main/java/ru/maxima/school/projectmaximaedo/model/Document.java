@@ -1,7 +1,6 @@
 package ru.maxima.school.projectmaximaedo.model;
 
 import jakarta.persistence.*;
-import ru.maxima.school.projectmaximaedo.enums.CredentialType;
 import ru.maxima.school.projectmaximaedo.enums.DocumentType;
 
 import java.time.LocalDateTime;
@@ -33,48 +32,52 @@ public class Document {
     /**
      * ID шаблона документа
      */
-    @Transient
-    private Long documentTemplateId;
+    //@Transient
+    private Long docTemplateId;
     /**
      *ссылка на шаблон документа
      */
-    @OneToOne(mappedBy = "document", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinColumn(name = "template_id")
     private DocumentTemplate template;
     /**
      * ID контрагента
      */
-    @Transient
-    private Long partnerId;
+    //@Transient
+    private Long partId;
     /**
      * ссылка на контрагента
      */
-    @OneToOne(mappedBy = "document", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinColumn(name = "partner_id")
     private Partner partner;
     /**
      * Список номеров файлов
      */
-    @Transient
+    //@Transient
     private List<Integer> filesNumbers;
     /**
      * ссылка на файлы
      */
-    @OneToMany(cascade = CascadeType.ALL , fetch = FetchType.LAZY, mappedBy = "document")
+    @OneToMany(cascade = CascadeType.ALL , fetch = FetchType.EAGER)
+    @JoinColumn(name = "files_id")
     private List<AttachedFile> files;
     /**
      * ID пользователя
      */
-    @Transient
-    private Long userId;
+    //@Transient
+    private Long usrId;
     /**
      * ссылка на пользователя
      */
-    @OneToOne(mappedBy = "document", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
     private User user;
     /**
      * ссылка на поля документа
      */
-    @OneToMany(cascade = CascadeType.ALL , fetch = FetchType.LAZY)//, mappedBy = "document")
-    //@JoinColumn(name = "document_id")
+    @OneToMany(cascade = CascadeType.ALL , fetch = FetchType.EAGER)
+    @JoinColumn(name = "completed_files_id")
     private List<DocumentField> completedFields;
     /**
      * флаг удаления
@@ -82,29 +85,38 @@ public class Document {
     @Column(name = "is_removed", nullable = false)
     private Boolean isRemoved;
 
-    @Column(name = "document_type")
+    @Column(name = "doc_type")
     @Enumerated(EnumType.STRING)
     private DocumentType documentType;
 
     public Document() {
     }
 
-    public Document(String name, LocalDateTime createdAt, Long registryNumber, Long documentTemplateId,
-                    DocumentTemplate template, Long partnerId, Partner partner, List<Integer> filesNumbers, List<AttachedFile> files, Long userId, User user, List<DocumentField> completedFields, Boolean isRemoved, DocumentType documentType) {
+    public Document(Long id, String name, LocalDateTime createdAt, Long registryNumber, Long docTemplateId,
+                    DocumentTemplate template, Long partId, Partner partner, List<Integer> filesNumbers, List<AttachedFile> files, Long usrId, User user, List<DocumentField> completedFields, Boolean isRemoved, DocumentType documentType) {
+        this.id = id;
         this.name = name;
         this.createdAt = createdAt;
         this.registryNumber = registryNumber;
-        this.documentTemplateId = documentTemplateId;
+        this.docTemplateId = docTemplateId;
         this.template = template;
-        this.partnerId = partnerId;
+        this.partId = partId;
         this.partner = partner;
         this.filesNumbers = filesNumbers;
         this.files = files;
-        this.userId = userId;
+        this.usrId = usrId;
         this.user = user;
         this.completedFields = completedFields;
         this.isRemoved = isRemoved;
         this.documentType = documentType;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -131,12 +143,12 @@ public class Document {
         this.registryNumber = registryNumber;
     }
 
-    public Long getDocumentTemplateId() {
-        return documentTemplateId;
+    public Long getDocTemplateId() {
+        return docTemplateId;
     }
 
-    public void setDocumentTemplateId(Long documentTemplateId) {
-        this.documentTemplateId = documentTemplateId;
+    public void setDocTemplateId(Long docTemplateId) {
+        this.docTemplateId = docTemplateId;
     }
 
     public DocumentTemplate getTemplate() {
@@ -147,12 +159,12 @@ public class Document {
         this.template = template;
     }
 
-    public Long getPartnerId() {
-        return partnerId;
+    public Long getPartId() {
+        return partId;
     }
 
-    public void setPartnerId(Long partnerId) {
-        this.partnerId = partnerId;
+    public void setPartId(Long partId) {
+        this.partId = partId;
     }
 
     public Partner getPartner() {
@@ -179,12 +191,12 @@ public class Document {
         this.files = files;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getUsrId() {
+        return usrId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUsrId(Long usrId) {
+        this.usrId = usrId;
     }
 
     public User getUser() {
@@ -215,56 +227,8 @@ public class Document {
         return documentType;
     }
 
-    public void setDocumentType(DocumentType documentType) {
-        this.documentType = documentType;
+    public void setDocumentType(DocumentType docType) {
+        this.documentType = docType;
     }
-
-    /**
-     * добавление файла в список
-     */
-    public void addFile(AttachedFile file) {
-        if(file != null) {
-            files.add(file);
-            file.setDocument(this);
-        }else{
-            throw(new  NullPointerException());
-        }
-    }
-
-    /**
-     * удаление файла из списка
-     */
-    public void removeFile(AttachedFile file){
-        if(file != null) {
-            files.remove(file);
-            file.setDocument(null);
-        }else{
-            throw(new  NullPointerException());
-        }
-    }
-
-    /**
-     * добавление полей в список
-     */
-//    public void addField(DocumentTemplateField field) {
-//        if(field != null) {
-//            completedFields.add(field);
-//            field.setDocument(this);
-//        }else{
-//            throw(new  NullPointerException());
-//        }
-//    }
-
-    /**
-     * удаление полей из списка
-     */
-//    public void removeField(DocumentTemplateField field) {
-//        if (field != null) {
-//            completedFields.remove(field);
-//            field.setDocument(null);
-//        }else{
-//            throw(new  NullPointerException());
-//        }
-//    }
 }
 

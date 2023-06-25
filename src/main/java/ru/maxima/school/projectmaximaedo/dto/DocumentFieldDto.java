@@ -17,7 +17,7 @@ public class DocumentFieldDto {
     /**
      * Тип поля
      */
-    @NotBlank(message = "Тип поля должны быть не пустым")
+    @NotNull(message = "Тип поля должны быть не пустым")
     private FieldType fieldType;
     /**
      * Плейсхолдер

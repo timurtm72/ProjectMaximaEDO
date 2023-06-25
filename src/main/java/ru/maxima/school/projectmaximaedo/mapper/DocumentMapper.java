@@ -17,19 +17,19 @@ public class DocumentMapper implements IMapper<Document,DocumentDto> {
     @Override
     public DocumentDto toDto(Document document) {
         DocumentDto documentDto = mapperUtil.getMapper().map(document, DocumentDto.class);
-        documentDto.setDocumentTemplateDto(
+        documentDto.setTemplate(
                 mapperUtil.getMapper().map(document.getTemplate(), DocumentTemplateDto.class)
         );
-        documentDto.setPartnerDto(
+        documentDto.setPartner(
                 mapperUtil.getMapper().map(document.getPartner(), PartnerDto.class)
         );
-        documentDto.setFilesDto(
+        documentDto.setFiles(
                 mapperUtil.mapList(document.getFiles(), AttachedFileDto.class)
         );
-        documentDto.setCompletedFieldsDto(mapperUtil.mapList(document.getCompletedFields(), DocumentFieldDto.class)
+        documentDto.setCompletedFields(mapperUtil.mapList(document.getCompletedFields(), DocumentFieldDto.class)
         );
-        documentDto.setUserDto(
-                mapperUtil.getMapper().map(document.getUser(),UserDto.class)
+        documentDto.setUser(
+                mapperUtil.getMapper().map(document.getUser(),UserReadDto.class)
         );
         return documentDto;
     }
@@ -37,20 +37,20 @@ public class DocumentMapper implements IMapper<Document,DocumentDto> {
     @Override
     public Document toEntity(DocumentDto documentDto) {
         Document document = mapperUtil.getMapper().map(documentDto, Document.class);
-        document.setTemplate(
-                mapperUtil.getMapper().map(documentDto.getDocumentTemplateDto(), DocumentTemplate.class)
+//        document.setTemplate(
+//                mapperUtil.getMapper().map(documentDto.getTemplate(), DocumentTemplate.class)
+//        );
+//        document.setPartner(
+//                mapperUtil.getMapper().map(documentDto.getPartner(), Partner.class)
+//        );
+//        document.setFiles(
+//                mapperUtil.mapList(documentDto.getFiles(), AttachedFile.class)
+//        );
+        document.setCompletedFields(mapperUtil.mapList(documentDto.getCompletedFields(), DocumentField.class)
         );
-        document.setPartner(
-                mapperUtil.getMapper().map(documentDto.getPartnerDto(), Partner.class)
-        );
-        document.setFiles(
-                mapperUtil.mapList(documentDto.getFilesDto(), AttachedFile.class)
-        );
-        document.setCompletedFields(mapperUtil.mapList(documentDto.getCompletedFieldsDto(), DocumentField.class)
-        );
-        document.setUser(
-                mapperUtil.getMapper().map(documentDto.getUserDto(),User.class)
-        );
+//        document.setUser(
+//                mapperUtil.getMapper().map(documentDto.getUser(),User.class)
+//        );
         return document;
     }
 }

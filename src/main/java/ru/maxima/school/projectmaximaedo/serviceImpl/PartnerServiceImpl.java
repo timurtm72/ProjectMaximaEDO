@@ -1,9 +1,12 @@
 package ru.maxima.school.projectmaximaedo.serviceImpl;
 
+import jakarta.validation.constraints.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import ru.maxima.school.projectmaximaedo.dto.CommentDto;
+import ru.maxima.school.projectmaximaedo.dto.CredentialDto;
 import ru.maxima.school.projectmaximaedo.dto.PartnerDto;
 import ru.maxima.school.projectmaximaedo.mapper.PartnerMapper;
 import ru.maxima.school.projectmaximaedo.model.Comment;
@@ -49,12 +52,12 @@ public class PartnerServiceImpl implements PartnerService {
 
     @Override
     public Boolean exists(Long id) {
-        return partnerRepository.existsByIdIsRemovedIsFalse(id);
+        return partnerRepository.existsByIdAndIsRemovedIsFalse(id);
     }
 
     @Override
     public PartnerDto getById(Long id) {
-        Partner partner = partnerRepository.findPartnerByIdIsRemovedIsFalse(id).orElse(null);
+        Partner partner = partnerRepository.findPartnerByIdAndIsRemovedIsFalse(id).orElse(null);
         return partner != null ? partnerMapper.toDto(partner) : null;
     }
 
@@ -64,8 +67,8 @@ public class PartnerServiceImpl implements PartnerService {
             return true;
         }
         Partner partner = partnerMapper.toEntity(partnerDto);
-        if (partnerDto.getCredentialId() != null) {
-            Credential credential = credentialRepository.findCredentialByIdIsRemovedIsFalse(partnerDto.getCredentialId()).orElse(null);
+        if (partnerDto.getCredId() != null) {
+            Credential credential = credentialRepository.findCredentialByIdAndIsRemovedIsFalse(partnerDto.getCredId()).orElse(null);
             if (credential != null) {
                 partner.setCredential(credential);
             } else {
@@ -76,7 +79,7 @@ public class PartnerServiceImpl implements PartnerService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     "Выберите ID учетных данных");
         }
-        if (partnerDto.getCommentsDto() != null) {
+        if (partnerDto.getCommId() != null) {
             if (partner.getComments() == null) {
                 partner.setComments(new ArrayList<>());
             }
@@ -86,12 +89,13 @@ public class PartnerServiceImpl implements PartnerService {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Список комментариев пуст");
             }
-            for (int i = 0; i < partnerDto.getCommentsId().size(); i++) {
-                if (partnerDto.getCommentsId().get(i) <= 0) {
+            for (int i = 0; i < partnerDto.getCommId().size(); i++) {
+                if (partnerDto.getCommId().get(i) <= 0) {
                     throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                             "Индекс списка комментариев не может быть меньше 0");
                 }
-                Comment comment = comments.get(partnerDto.getCommentsId().get(i) - 1);
+                Comment comment = comments.get(partnerDto.getCommId().get(i) - 1);
+                //comment.setPartner(partner);
                 partner.getComments().add(comment);
             }
         } else {
@@ -109,13 +113,12 @@ public class PartnerServiceImpl implements PartnerService {
             return true;
         }
         partnerDto.setId(id);
-        if(partnerDto.getCommentsDto() == null) {
-            partnerDto.setCommentsDto(new ArrayList<>());
-        }
         Partner partner = partnerMapper.toEntity(partnerDto);
-        Partner readPartner = partnerRepository.findPartnerByIdIsRemovedIsFalse(id).orElse(null);
+        Partner readPartner = partnerRepository.findPartnerByIdAndIsRemovedIsFalse(id).orElse(null);
         if (readPartner != null) {
             partner.setRemoved(readPartner.isRemoved());
+            partner.setComments(readPartner.getComments());
+            partner.setCredential(readPartner.getCredential());
             partnerRepository.save(partner);
             return false;
         }else{
@@ -125,7 +128,7 @@ public class PartnerServiceImpl implements PartnerService {
     }
     @Override
     public Boolean safeDelete(Long id) {
-        Partner partner = partnerRepository.findPartnerByIdIsRemovedIsFalse(id).orElse(null);
+        Partner partner = partnerRepository.findPartnerByIdAndIsRemovedIsFalse(id).orElse(null);
         if (partner != null) {
             partner.setRemoved(true);
             partnerRepository.save(partner);

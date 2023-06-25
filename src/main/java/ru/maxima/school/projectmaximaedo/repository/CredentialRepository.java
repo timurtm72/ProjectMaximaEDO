@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface CredentialRepository extends JpaRepository<Credential,Long> {
     List<Credential> findAllByIsRemovedIsFalseOrderByIdAsc();
-    Optional<Credential> findCredentialByIdIsRemovedIsFalse(Long id);
-    Boolean existsByIdIsRemovedIsFalse(Long id);
+    Optional<Credential> findCredentialByIdAndIsRemovedIsFalse(Long id);
+    Boolean existsByIdAndIsRemovedIsFalse(Long id);
 }

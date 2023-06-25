@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface FileRepository extends JpaRepository<AttachedFile, Long> {
     List<AttachedFile> findAllByIsRemovedIsFalseOrderByIdAsc();
-    Optional<AttachedFile> findFileByIdIsRemovedIsFalse(Long id);
-    Boolean existsByIdIsRemovedIsFalse(Long id);
+    Optional<AttachedFile> findFileByIdAndIsRemovedIsFalse(Long id);
+    Boolean existsByIdAndIsRemovedIsFalse(Long id);
 }

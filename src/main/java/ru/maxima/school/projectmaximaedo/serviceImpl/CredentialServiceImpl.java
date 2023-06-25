@@ -34,12 +34,12 @@ public class CredentialServiceImpl implements CredentialService {
 
     @Override
     public Boolean exists(Long id) {
-        return credentialRepository.existsByIdIsRemovedIsFalse(id);
+        return credentialRepository.existsByIdAndIsRemovedIsFalse(id);
     }
 
     @Override
     public CredentialDto getById(Long id) {
-        Credential credential = credentialRepository.findCredentialByIdIsRemovedIsFalse(id).orElse(null);
+        Credential credential = credentialRepository.findCredentialByIdAndIsRemovedIsFalse(id).orElse(null);
         return credential != null ?credentialMapper.toDto(credential) : null;
     }
 
@@ -63,7 +63,7 @@ public class CredentialServiceImpl implements CredentialService {
         }
         credentialDto.setId(id);
         Credential credential =  credentialMapper.toEntity(credentialDto);
-        Credential readCredential = credentialRepository.findCredentialByIdIsRemovedIsFalse(id).orElse(null);
+        Credential readCredential = credentialRepository.findCredentialByIdAndIsRemovedIsFalse(id).orElse(null);
         if(readCredential != null){
             credential.setVersion(readCredential.getVersion() + 1);
             credential.setRemoved(readCredential.getRemoved());
@@ -75,7 +75,7 @@ public class CredentialServiceImpl implements CredentialService {
 
     @Override
     public Boolean safeDelete(Long id) {
-        Credential credential = credentialRepository.findCredentialByIdIsRemovedIsFalse(id).orElse(null);
+        Credential credential = credentialRepository.findCredentialByIdAndIsRemovedIsFalse(id).orElse(null);
         if(credential != null){
             credential.setRemoved(true);
             credentialRepository.save(credential);

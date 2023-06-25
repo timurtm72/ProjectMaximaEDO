@@ -51,35 +51,37 @@ public class Partner {
     /**
      * Ссылка на сущность Комментарий
      */
-    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "partner")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "partner_id")
     private List<Comment> comments;
 
     /**
      * Ссылка на сущность Document
      */
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "document_id")
-    private Document document;
+//    @OneToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "document_id")
+//    private Document document;
     /**
      * сылка на сущность Credential (полномочия)
      */
-    @OneToOne(mappedBy = "partner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Credential credential;
+    //@Transient
+    private List<Integer> commId;
+    //@Transient
+    private Long credId;
     /**
      * флаг удаления
      */
     @Column(name = "is_removed", nullable = false)
     private boolean isRemoved;
-    @Transient
-    private List<Integer> commentsId;
-    @Transient
-    private Long credentialId;
 
     public Partner() {
     }
 
-    public Partner(String lastName, String firstName, String patronymic, String phone, String telegram, String email,
-                   String country, List<Comment> comments, Document document, Credential credential, boolean isRemoved, List<Integer> commentsId, Long credentialId) {
+    public Partner(Long id, String lastName, String firstName, String patronymic, String phone, String telegram,
+                   String email, String country, List<Comment> comments, Credential credential, List<Integer> commId, Long credId, boolean isRemoved) {
+        this.id = id;
         this.lastName = lastName;
         this.firstName = firstName;
         this.patronymic = patronymic;
@@ -88,11 +90,18 @@ public class Partner {
         this.email = email;
         this.country = country;
         this.comments = comments;
-        this.document = document;
         this.credential = credential;
+        this.commId = commId;
+        this.credId = credId;
         this.isRemoved = isRemoved;
-        this.commentsId = commentsId;
-        this.credentialId = credentialId;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getLastName() {
@@ -159,14 +168,6 @@ public class Partner {
         this.comments = comments;
     }
 
-    public Document getDocument() {
-        return document;
-    }
-
-    public void setDocument(Document document) {
-        this.document = document;
-    }
-
     public Credential getCredential() {
         return credential;
     }
@@ -175,27 +176,27 @@ public class Partner {
         this.credential = credential;
     }
 
+    public List<Integer> getCommId() {
+        return commId;
+    }
+
+    public void setCommId(List<Integer> commId) {
+        this.commId = commId;
+    }
+
+    public Long getCredId() {
+        return credId;
+    }
+
+    public void setCredId(Long credId) {
+        this.credId = credId;
+    }
+
     public boolean isRemoved() {
         return isRemoved;
     }
 
     public void setRemoved(boolean removed) {
         isRemoved = removed;
-    }
-
-    public List<Integer> getCommentsId() {
-        return commentsId;
-    }
-
-    public void setCommentsId(List<Integer> commentsId) {
-        this.commentsId = commentsId;
-    }
-
-    public Long getCredentialId() {
-        return credentialId;
-    }
-
-    public void setCredentialId(Long credentialId) {
-        this.credentialId = credentialId;
     }
 }

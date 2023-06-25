@@ -19,20 +19,20 @@ public class DocumentTemplateDto {
     @Positive(message = "Номер версии должен быть положительным значением")
     private Integer version;
     /** Ссылка на поля документа*/
-    private List<DocumentFieldDto> templateFieldsDto;
+    private List<DocumentFieldDto> templateFields;
 
-    @NotBlank(message = "Поля шаблона не может быть пустым")
-    private List<Integer> templateFieldNumbersDto;
+    @NotNull(message = "Поля шаблона не может быть пустым")
+    private List<Integer> templateFieldNumbers;
     public DocumentTemplateDto() {
     }
 
-    public DocumentTemplateDto(Long id, String name, Integer version,
-                               List<DocumentFieldDto> templateFields, List<Integer> templateFieldNumbers) {
+    public DocumentTemplateDto(Long id, String name, Integer version, List<DocumentFieldDto> templateFieldsDto,
+                               List<Integer> templateFieldNumbers) {
         this.id = id;
         this.name = name;
         this.version = version;
-        this.templateFieldsDto = templateFields;
-        this.templateFieldNumbersDto = templateFieldNumbers;
+        this.templateFields = templateFieldsDto;
+        this.templateFieldNumbers = templateFieldNumbers;
     }
 
     public Long getId() {
@@ -59,19 +59,19 @@ public class DocumentTemplateDto {
         this.version = version;
     }
 
-    public List<DocumentFieldDto> getTemplateFieldsDto() {
-        return templateFieldsDto;
+    public List<DocumentFieldDto> getTemplateFields() {
+        return templateFields;
     }
 
-    public void setTemplateFieldsDto(List<DocumentFieldDto> templateFieldsDto) {
-        this.templateFieldsDto = templateFieldsDto;
+    public void setTemplateFields(List<DocumentFieldDto> templateFields) {
+        this.templateFields = templateFields;
     }
 
-    public List<Integer> getTemplateFieldNumbersDto() {
-        return templateFieldNumbersDto;
+    public List<Integer> getTemplateFieldNumbers() {
+        return templateFieldNumbers;
     }
 
-    public void setTemplateFieldNumbersDto(List<Integer> templateFieldNumbersDto) {
-        this.templateFieldNumbersDto = templateFieldNumbersDto;
+    public void setTemplateFieldNumbers(List<Integer> templateFieldNumbers) {
+        this.templateFieldNumbers = templateFieldNumbers;
     }
 }

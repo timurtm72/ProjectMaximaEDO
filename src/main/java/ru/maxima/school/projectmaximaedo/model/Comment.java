@@ -23,12 +23,7 @@ public class Comment {
      */
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
-    /**
-     * Ссылка на контрагента
-     */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="partner_id")
-    private Partner partner;
+
     /**
      * Флаг удаления
      */
@@ -38,10 +33,10 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(String text, LocalDateTime createdAt, Partner partner, Boolean isRemoved) {
+    public Comment(String text, LocalDateTime createdAt, Boolean isRemoved) {
         this.text = text;
         this.createdAt = createdAt;
-        this.partner = partner;
+
         this.isRemoved = isRemoved;
     }
 
@@ -51,13 +46,6 @@ public class Comment {
 
     public Long getId() {
         return id;
-    }
-    public Partner getPartner() {
-        return partner;
-    }
-
-    public void setPartner(Partner partner) {
-        this.partner = partner;
     }
 
     public String getText() {

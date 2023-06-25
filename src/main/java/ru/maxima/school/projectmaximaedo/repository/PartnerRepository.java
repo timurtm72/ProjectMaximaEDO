@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface PartnerRepository extends JpaRepository<Partner, Long> {
     List<Partner> findAllByIsRemovedIsFalseOrderByIdAsc();
-    Optional<Partner> findPartnerByIdIsRemovedIsFalse(Long id);
-    Boolean existsByIdIsRemovedIsFalse(Long id);
+    Optional<Partner> findPartnerByIdAndIsRemovedIsFalse(Long id);
+    Boolean existsByIdAndIsRemovedIsFalse(Long id);
 }

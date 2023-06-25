@@ -20,14 +20,14 @@ public class DocumentTemplate {
     @Column(name = "version", nullable = false)
     private Integer version;
     /** Ссылка на документ*/
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "document_id")
-    private Document document;
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "document_id")
+//    private Document document;
     /** Ссылка на поля документа*/
-    @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)//, mappedBy = "document_template")
-    //@JoinColumn(name="document_template_id")
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "document_templates_id")
     private List<DocumentField> templateFields;
-    @Transient
+    //@Transient
     private List<Integer> templateFieldNumbers;
 
     /** Флаг удаления */
@@ -42,7 +42,7 @@ public class DocumentTemplate {
         this.name = name;
         this.createdAt = createdAt;
         this.version = version;
-        this.document = document;
+        //this.document = document;
         this.templateFields = templateFields;
         this.templateFieldNumbers = templateFieldNumbers;
         this.isRemoved = isRemoved;
@@ -88,13 +88,13 @@ public class DocumentTemplate {
         this.version = version;
     }
 
-    public Document getDocument() {
-        return document;
-    }
-
-    public void setDocument(Document document) {
-        this.document = document;
-    }
+//    public Document getDocument() {
+//        return document;
+//    }
+//
+//    public void setDocument(Document document) {
+//        this.document = document;
+//    }
 
     public boolean isRemoved() {
         return isRemoved;
