@@ -4,12 +4,15 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import ru.maxima.school.projectmaximaedo.dto.AttachedFileDto;
-import ru.maxima.school.projectmaximaedo.dto.DocumentFieldDto;
-import ru.maxima.school.projectmaximaedo.dto.UserDto;
-import ru.maxima.school.projectmaximaedo.dto.UserReadDto;
+import ru.maxima.school.projectmaximaedo.dto.*;
+import ru.maxima.school.projectmaximaedo.security.JWTUtil;
 import ru.maxima.school.projectmaximaedo.service.UserService;
 import ru.maxima.school.projectmaximaedo.utils.Response;
 
@@ -20,9 +23,25 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JWTUtil jwtGenerator;
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JWTUtil jwtGenerator) {
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+        this.jwtGenerator = jwtGenerator;
+    }
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponseDTO> loginUser(@RequestBody LoginDto loginDto) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginDto.getLogin(),
+                        loginDto.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = jwtGenerator.generateToken(authentication.getName());
+        return new ResponseEntity<>(new AuthResponseDTO(token), HttpStatus.OK);
     }
     @GetMapping()
     public ResponseEntity<List<UserReadDto>> getUsers(){
@@ -42,13 +61,13 @@ public class UserController {
         }
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
-    @PostMapping()
+    @PostMapping("/register")
     public ResponseEntity<Response> registerUser(@Valid @RequestBody UserDto userDto) {
         if (userService.existsByLogin(userDto.getLogin())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "Такой логин уже занят");
         }
-//        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
         if (userService.create(userDto)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,

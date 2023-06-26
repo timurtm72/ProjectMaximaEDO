@@ -29,7 +29,10 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Autowired
     public DocumentServiceImpl(DocumentRepository documentRepository,
-                               DocumentMapper documentMapper, MapperUtil mapperUtil, DocumentTemplateRepository documentTemplateRepository, PartnerRepository partnerRepository, UserRepository userRepository, FileRepository fileRepository) {
+                               DocumentMapper documentMapper, MapperUtil mapperUtil,
+                               DocumentTemplateRepository documentTemplateRepository,
+                               PartnerRepository partnerRepository, UserRepository userRepository,
+                               FileRepository fileRepository) {
         this.documentRepository = documentRepository;
         this.documentMapper = documentMapper;
         this.mapperUtil = mapperUtil;
@@ -112,15 +115,15 @@ public class DocumentServiceImpl implements DocumentService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     "Выберите ID контрагента для этого документа");
         }
-        if(documentDto.getUsrId() != null){
+        if (documentDto.getUsrId() != null) {
             User user = userRepository.findUserByIdAndIsRemovedIsFalse(documentDto.getUsrId()).orElse(null);
-            if(user != null){
+            if (user != null) {
                 document.setUser(user);
-            }else{
+            } else {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Документ с ID = " + documentDto.getUsrId() + " пользователя не найден");
             }
-        }else{
+        } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     "Выберите ID пользоваткля для этого документа");
         }
@@ -154,24 +157,21 @@ public class DocumentServiceImpl implements DocumentService {
                 documentRepository.findAllByDocumentTypeOrderByRegistryNumberAsc(documentType);
         if (documents == null || documents.size() == 0) {
             document.setRegistryNumber(1L);
-        }else{
+        } else {
             Document documentRead = documents.get(documents.size() - 1);
             document.setRegistryNumber(documentRead.getRegistryNumber() + 1L);
         }
-       documentRepository.save(document);
+        documentRepository.save(document);
         return false;
     }
 
     @Override
     @Transactional
     public Boolean update(DocumentDto documentDto, Long id) {
-        if(documentDto == null){
+        if (documentDto == null) {
             return true;
         }
         documentDto.setId(id);
-        if(documentDto.getCompletedFields() == null) {
-            documentDto.setCompletedFields(new ArrayList<>());
-        }
         Document document = documentMapper.toEntity(documentDto);
         Document readDocument = documentRepository.findDocumentByIdAndIsRemovedIsFalse(id).orElse(null);
         if (readDocument != null) {
@@ -185,7 +185,7 @@ public class DocumentServiceImpl implements DocumentService {
             document.setFiles(readDocument.getFiles());
             documentRepository.save(document);
             return false;
-        }else{
+        } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     "В базе нет документа с таким ID");
         }
