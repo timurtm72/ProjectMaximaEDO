@@ -34,14 +34,14 @@ public class UserController {
         this.jwtGenerator = jwtGenerator;
     }
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDTO> loginUser(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<AuthResponseDto> loginUser(@RequestBody LoginDto loginDto) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginDto.getLogin(),
                         loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtGenerator.generateToken(authentication.getName());
-        return new ResponseEntity<>(new AuthResponseDTO(token), HttpStatus.OK);
+        return new ResponseEntity<>(new AuthResponseDto(token), HttpStatus.OK);
     }
     @GetMapping()
     public ResponseEntity<List<UserReadDto>> getUsers(){

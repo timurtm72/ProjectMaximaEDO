@@ -12,13 +12,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import ru.maxima.school.projectmaximaedo.security.JWTFilter;
 import ru.maxima.school.projectmaximaedo.security.SimpleAccessDeniedHandler;
 import ru.maxima.school.projectmaximaedo.security.SimpleAuthenticationEntryPoint;
 import ru.maxima.school.projectmaximaedo.security.CustomUserDetailsService;
 
 @Configuration
-public class SecurityConfig {
+public class SecurityConfig  implements WebMvcConfigurer {
     private final CustomUserDetailsService personDetailsService;
     private final JWTFilter filter;
 
@@ -59,7 +60,7 @@ public class SecurityConfig {
     protected PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
+    @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:8081")

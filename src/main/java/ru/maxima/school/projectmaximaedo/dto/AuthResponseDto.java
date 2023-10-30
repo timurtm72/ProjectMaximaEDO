@@ -1,13 +1,13 @@
 package ru.maxima.school.projectmaximaedo.dto;
 
-public class AuthResponseDTO {
+public class AuthResponseDto {
     private String accessToken;
     private String tokenType = "Bearer ";
 
-    public AuthResponseDTO() {
+    public AuthResponseDto() {
     }
 
-    public AuthResponseDTO(String accessToken) {
+    public AuthResponseDto(String accessToken) {
         this.accessToken = accessToken;
     }
 
